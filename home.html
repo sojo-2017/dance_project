@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 AAD PAC Schedule</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            color: #1E40AF;
+        }
+        .container {
+            max-width: 100%;
+            overflow-x: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #1E40AF;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        .filters input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>2025 AAD PAC Schedule</h1>
+    <div class="container">
+        <div class="filters" id="filters"></div>
+        <table id="data-table">
+            <thead>
+                <tr id="table-header"></tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+
+    <script>
+        const data = [
+            { id: 1, name: "Alice", age: 25, city: "New York", email: "alice@example.com", phone: "123-456-7890", job: "Engineer", company: "TechCorp", status: "Active", score: 95 },
+            { id: 2, name: "Bob", age: 30, city: "Los Angeles", email: "bob@example.com", phone: "234-567-8901", job: "Designer", company: "Creative Inc", status: "Inactive", score: 88 },
+            { id: 3, name: "Charlie", age: 28, city: "Chicago", email: "charlie@example.com", phone: "345-678-9012", job: "Manager", company: "Business Ltd", status: "Active", score: 92 },
+        ];
+        
+        const filters = {};
+        const tableHeader = document.getElementById("table-header");
+        const tableBody = document.getElementById("table-body");
+        const filtersContainer = document.getElementById("filters");
+
+        function renderTable(filteredData) {
+            tableBody.innerHTML = "";
+            filteredData.forEach(row => {
+                const tr = document.createElement("tr");
+                Object.values(row).forEach(cell => {
+                    const td = document.createElement("td");
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function renderFilters() {
+            filtersContainer.innerHTML = "";
+            Object.keys(data[0]).forEach(col => {
+                const input = document.createElement("input");
+                input.placeholder = `Filter ${col}`;
+                input.addEventListener("input", (e) => {
+                    filters[col] = e.target.value.toLowerCase();
+                    applyFilters();
+                });
+                filtersContainer.appendChild(input);
+            });
+        }
+
+        function applyFilters() {
+            const filteredData = data.filter(row => 
+                Object.keys(filters).every(key => 
+                    !filters[key] || row[key].toString().toLowerCase().includes(filters[key])
+                )
+            );
+            renderTable(filteredData);
+        }
+
+        function initializeTable() {
+            Object.keys(data[0]).forEach(col => {
+                const th = document.createElement("th");
+                th.textContent = col;
+                tableHeader.appendChild(th);
+            });
+            renderFilters();
+            renderTable(data);
+        }
+
+        initializeTable();
+    </script>
+</body>
+</html>
